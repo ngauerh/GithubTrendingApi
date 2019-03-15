@@ -7,7 +7,7 @@ session = DBSession()
 
 def create_threading(**kwargs):
     try:
-        session.add(DevApi(repo=kwargs['repo'], language=kwargs['language'], user=kwargs['user'], about=kwargs['about'],
+        session.add(Api(repo=kwargs['repo'], language=kwargs['language'], user=kwargs['user'], about=kwargs['about'],
                         link=kwargs['link'], stars=kwargs['stars'], forks=kwargs['forks'], avatars=kwargs['avatars'],
                         new_stars=kwargs['new_stars'], sincedate=kwargs['sincedate']
                         ))
@@ -31,9 +31,9 @@ def create_dev(**kwargs):
 
 def del_api(*args):
     if not args[0]:
-        api = session.query(DevApi).filter(DevApi.sincedate == args[1]).order_by(desc(DevApi.id)).all()
+        api = session.query(Api).filter(Api.sincedate == args[1]).order_by(desc(Api.id)).all()
     else:
-        api = session.query(DevApi).filter(DevApi.language == args[0], DevApi.sincedate == args[1]).order_by(desc(DevApi.id)).all()
+        api = session.query(Api).filter(Api.language == args[0], Api.sincedate == args[1]).order_by(desc(Api.id)).all()
     for i in api:
         tt = (datetime.datetime.now() - i.update_time).total_seconds()
         if tt > 1000:

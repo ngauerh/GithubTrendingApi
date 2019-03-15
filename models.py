@@ -38,7 +38,6 @@ class Api(Base):
     forks = Column(String(128))
     avatars = Column(Text)  # avatar
     new_stars = Column(String(128))
-    new_stars = Column(String(128))
     sincedate = Column(String(30))
     update_time = Column(DateTime(timezone=True), default=func.now())
 

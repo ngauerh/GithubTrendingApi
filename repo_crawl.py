@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import time
+import re
 from models import Languages
 from config import GithubLanguages, SinceDate
 from db_access import create_threading, create_languages, del_api
@@ -87,15 +88,14 @@ def crawl(url, since, lang=None):
 
 
 # 获取所有语言
-def get_lang(url):
-    r = requests.get(url, headers=headers)
+def get_lang():
+    r = requests.get(base_url, headers=headers)
     html = r.text
-    soup = BeautifulSoup(html, 'lxml')
-    lang_list = soup.find_all('span', {"class": "select-menu-item-text js-select-button-text js-navigation-open"})
-
+    lang_pattern = re.compile('<span data-menu-button-text>(.*?)</span>')
+    lang_list = lang_pattern.findall(html)
     obj = []
     for lang in lang_list:
-        obj.append(Languages(language=lang.string))
+        obj.append(Languages(language=lang))
     create_languages(obj)
 
 
@@ -113,5 +113,5 @@ def get_url():
 
 if __name__ == '__main__':
     get_url()
-    # get_lang(base_url)
+    # get_lang()
 
